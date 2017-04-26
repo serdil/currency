@@ -1,1 +1,2 @@
-# currency
+# Currency Tracker
+
