@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+    nginx:
+        restart: always
+        image: nginx:1.11.6-alpine
+
+    django:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./docker/django/Dockerfile
+        volumes:
+            - .:/django
+
+    web:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./docker/web/Dockerfile
+        volumes:
+            - .:/django
