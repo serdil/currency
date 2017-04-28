@@ -1,16 +1,61 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 import ChartAdderView from '../ChartAdder';
 import ChartsContainerView from '../ChartsContainer';
+
+import * as currenciesActions from '../../actions/currencies';
 
 import './style.scss';
 
 class HomeView extends React.Component {
 
-    static propTypes = {};
+    static propTypes = {
+        currencies: PropTypes.object
+    };
 
-    static defaultProps = {};
+    componentWillMount() {
+        if (!this.isCurrencyPairsFetched()) {
+            this.startFetchingCurrencyPairs()
+        }
+    }
+
+    isCurrencyPairsFetched = () => {
+        return this.props.currencies.isCurrencyPairsLoaded
+    };
+
+    isCurrencyPairsFetchError = () => {
+        return this.props.currencies.isCurrencyPairsLoadError
+    };
+
+    startFetchingCurrencyPairs = () => {
+        this.props.fetchCurrencyPairs((err) => {
+            if (err !== undefined) {
+                setTimeout(this.startFetchingCurrencyPairs, 1000)
+            }
+        })
+    };
+
+    getCurrencyPairsLoadErrorView = () => {
+        if (this.isCurrencyPairsFetchError()) {
+            return <div>(!) There might be a problem with your internet connection.</div>
+        }
+    };
+
+    getCurrencyPairsLoadingView = () => {
+        if (!this.isCurrencyPairsFetched()) return <div>Loading currency pairs...</div>
+    };
+
+    getChartAdderView = () => {
+        if (this.isCurrencyPairsFetched()) return <ChartAdderView/>
+    };
+
+    getChartsContainerView = () => {
+        if (this.isCurrencyPairsFetched()) return <ChartsContainerView/>
+    };
 
     render() {
         return (
@@ -18,8 +63,10 @@ class HomeView extends React.Component {
                 <div className="margin-top-medium text-center">
                 </div>
                 <div className="text-center">
-                    <ChartAdderView/>
-                    <ChartsContainerView/>
+                    {this.getCurrencyPairsLoadingView()}
+                    {this.getCurrencyPairsLoadErrorView()}
+                    {this.getChartAdderView()}
+                    {this.getChartsContainerView()}
                 </div>
             </div>
         );
@@ -27,8 +74,14 @@ class HomeView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {};
+    return {
+        currencies: state.currencies
+    };
 };
 
-export default connect(mapStateToProps)(HomeView);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(currenciesActions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
 export { HomeView as HomeViewNotConnected };

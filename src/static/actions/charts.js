@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import {
     ADD_CHART,
     LOAD_CHART_REQUEST,
@@ -18,7 +17,7 @@ export function addChart(currencyPair) {
         const chartId = getState().charts.chartIdCounter;
 
         dispatch(loadChartRequest(chartId));
-        getCurrencyDataFromAPI(currencyPair)
+        getCurrencyDataFromApi(currencyPair)
             .then(response => {
                 dispatch(loadChartResponse(chartId, response))
             })
@@ -41,7 +40,7 @@ function addChartAction(currencyPair) {
     }
 }
 
-function getCurrencyDataFromAPI(currencyPair) { // TODO implement
+function getCurrencyDataFromApi(currencyPair) { // TODO implement
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const rand = Math.random();
@@ -86,7 +85,7 @@ export function refreshChart(chartId) {
         const currencyPair = getChartWithId(getState().charts.charts, chartId).currencyPair
 
         dispatch(refreshChartRequest(chartId));
-        getCurrencyDataFromAPI(currencyPair)
+        getCurrencyDataFromApi(currencyPair)
             .then(response => {
                 dispatch(refreshChartResponse(chartId, response))
             })
