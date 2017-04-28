@@ -21,9 +21,6 @@ class App extends React.Component {
         const homeClass = classNames({
             active: this.props.pathName === '/'
         });
-        const loginClass = classNames({
-            active: this.props.pathName === '/login'
-        });
 
         return (
             <div className="app">
@@ -42,7 +39,7 @@ class App extends React.Component {
                                 <span className="icon-bar" />
                             </button>
                             <a className="navbar-brand" tabIndex="0" onClick={this.goToIndex}>
-                                Django React Redux Demo
+                                Currency Tracker
                             </a>
                         </div>
                         <div className="collapse navbar-collapse" id="top-navbar">

@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ChartAdderView from '../ChartAdder';
+import ChartsContainerView from '../ChartsContainer';
+
 import './style.scss';
 
 class HomeView extends React.Component {
@@ -15,7 +18,8 @@ class HomeView extends React.Component {
                 <div className="margin-top-medium text-center">
                 </div>
                 <div className="text-center">
-                    <h1>Django React Redux Demo</h1>
+                    <ChartAdderView/>
+                    <ChartsContainerView/>
                 </div>
             </div>
         );
