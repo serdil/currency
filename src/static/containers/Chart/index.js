@@ -3,6 +3,11 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import {
+    POLLING_INTERVALS,
+    DEFAULT_POLLING_INTERVAL
+} from '../../constants';
+
 import * as chartActions from '../../actions/charts';
 
 
@@ -110,7 +115,7 @@ class ChartView extends React.Component {
     };
 
     getPollingIntervalOptions = () => {
-        return [1, 2, 5, 10, 20, 30, 60, 120, 300]
+        return POLLING_INTERVALS
     };
 
     getPollingIntervalDropdownOptionViews = () => {
@@ -120,7 +125,7 @@ class ChartView extends React.Component {
 
     getPollingIntervalDropdownView = () => {
         return (
-            <select defaultValue={10} onChange={this.onPollingIntervalDropdownChange}>
+            <select defaultValue={DEFAULT_POLLING_INTERVAL} onChange={this.onPollingIntervalDropdownChange}>
                 {this.getPollingIntervalDropdownOptionViews()}
             </select>
         )

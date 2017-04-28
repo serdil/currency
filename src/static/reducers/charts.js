@@ -7,7 +7,9 @@ import {
     REFRESH_CHART_RESPONSE,
     REFRESH_CHART_FAILURE,
     CLOSE_CHART,
-    SET_CHART_POLLING_INTERVAL
+    SET_CHART_POLLING_INTERVAL,
+
+    DEFAULT_POLLING_INTERVAL
 } from '../constants';
 
 
@@ -56,7 +58,7 @@ function newChart(chartId, currencyPair) {
         isLoaded: false,
         isLoadFailed: false,
         loadFailedErrorMessage: null,
-        pollingInterval: 10,
+        pollingInterval: DEFAULT_POLLING_INTERVAL,
         currentPrice: null,
         isRefreshing: false,
         isRefreshed: false,
