@@ -51,7 +51,7 @@ function getCurrencyDataFromApi(currencyPair) { // TODO implement
                 reject(null);
             }
             else {
-                resolve(Math.random() * 10);
+                resolve(Array.from({length: 50}, () => Math.random() * 10));
             }
         }, 500)
     })
@@ -68,7 +68,7 @@ function loadChartResponse(chartId, response) {
     return {
         type: LOAD_CHART_RESPONSE,
         chartId: chartId,
-        currentPrice: response
+        priceData: response
     }
 }
 
@@ -118,7 +118,7 @@ function refreshChartResponse(chartId, response) {
     return {
         type: REFRESH_CHART_RESPONSE,
         chartId: chartId,
-        currentPrice: response
+        priceData: response
     }
 }
 

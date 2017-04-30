@@ -50,11 +50,23 @@ class HomeView extends React.Component {
     };
 
     getChartAdderView = () => {
-        if (this.isCurrencyPairsFetched()) return <ChartAdderView/>
+        return <ChartAdderView/>
     };
 
     getChartsContainerView = () => {
-        if (this.isCurrencyPairsFetched()) return <ChartsContainerView/>
+        return <ChartsContainerView/>
+    };
+
+    getChartAdderAndChartsContainerView = () => {
+        if (this.isCurrencyPairsFetched()) {
+            return (
+                <div>
+                    {this.getChartAdderView()}
+                    <hr />
+                    {this.getChartsContainerView()}
+                </div>
+            )
+        }
     };
 
     render() {
@@ -65,8 +77,7 @@ class HomeView extends React.Component {
                 <div className="text-center">
                     {this.getCurrencyPairsLoadingView()}
                     {this.getCurrencyPairsLoadErrorView()}
-                    {this.getChartAdderView()}
-                    {this.getChartsContainerView()}
+                    {this.getChartAdderAndChartsContainerView()}
                 </div>
             </div>
         );

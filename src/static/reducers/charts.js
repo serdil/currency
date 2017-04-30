@@ -59,7 +59,7 @@ function newChart(chartId, currencyPair) {
         isLoadFailed: false,
         loadFailedErrorMessage: null,
         pollingInterval: DEFAULT_POLLING_INTERVAL,
-        currentPrice: null,
+        priceData: null,
         isRefreshing: false,
         isRefreshed: false,
         isRefreshFailed: false,
@@ -100,7 +100,7 @@ function loadChartResponse(state, action) {
             isLoading: false,
             isLoaded: true,
             isLoadFailed: false,
-            currentPrice: action.currentPrice
+            priceData: action.priceData
         })
     );
 
@@ -152,7 +152,7 @@ function refreshChartResponse(state, action) {
             isRefreshing: false,
             isRefreshed: true,
             isRefreshFailed: false,
-            currentPrice: action.currentPrice
+            priceData: action.priceData
         })
     );
 

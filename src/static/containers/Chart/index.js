@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import PricePlot from '../../components/PricePlot'
+
 import {
     POLLING_INTERVALS,
     DEFAULT_POLLING_INTERVAL
@@ -92,8 +94,13 @@ class ChartView extends React.Component {
         this.props.closeChart(this.getChart().id)
     };
 
+    getPriceData = () => {
+        return this.getChart().priceData;
+    };
+
     getCurrentPrice = () => {
-        return this.getChart().currentPrice
+        const priceData = this.getPriceData();
+        return priceData[priceData.length-1]
     };
 
     getCurrencyName = () => {
@@ -103,6 +110,12 @@ class ChartView extends React.Component {
     getCurrentPriceView = () => {
         if (this.isDataAvailable()) {
             return <div>{this.getCurrentPrice()}</div>
+        }
+    };
+
+    getPriceDataPlotView = () => {
+        if (this.isDataAvailable()) {
+            return <PricePlot priceData={this.getPriceData()}/>
         }
     };
 
@@ -159,6 +172,7 @@ class ChartView extends React.Component {
                 {this.getChartRefreshingView()}
                 {this.getChartRefreshErrorView()}
                 {this.getPollingIntervalDropdownView()}
+                {this.getPriceDataPlotView()}
                 {this.getCloseButtonView()}
             </div>
         )
