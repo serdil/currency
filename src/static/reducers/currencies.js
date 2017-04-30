@@ -6,6 +6,7 @@ import {
 
 const initialState = {
     currencyPairs: null,
+    defaultCurrency: null,
     isCurrencyPairsLoaded: false,
     isCurrencyPairsLoadError: false
 };
@@ -25,7 +26,8 @@ function fetchCurrencyPairsResponse(state, action) {
     return Object.assign({}, state, {
         isCurrencyPairsLoaded: true,
         isCurrencyPairsLoadError: false,
-        currencyPairs: action.currencyPairs
+        currencyPairs: action.currencyPairs,
+        defaultCurrency: action.currencyPairs[0]
     });
 }
 

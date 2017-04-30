@@ -9,18 +9,19 @@ import * as chartActions from '../../actions/charts';
 class ChartAdderView extends React.Component {
 
     static propTypes = {
-        addChart: PropTypes.func
+        addChart: PropTypes.func,
+        currencies: PropTypes.object
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            selectedCurrency: 'EUR-TRY'
+            selectedCurrency: props.currencies.currencyPairs[0]
         };
     }
 
     getCurrencyOptions = () => {
-        return ['EUR-TRY', 'USD-TRY', 'CAD-TRY', 'NZD-TRY'];
+        return this.props.currencies.currencyPairs;
     };
 
     onDropdownChange = (evt) => {
@@ -58,7 +59,9 @@ class ChartAdderView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {};
+    return {
+        currencies: state.currencies
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
