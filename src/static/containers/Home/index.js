@@ -3,9 +3,12 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import ChartAdderView from '../ChartAdder';
 import ChartsContainerView from '../ChartsContainer';
+
+import GridTest from '../../components/GridTest'
 
 import * as currenciesActions from '../../actions/currencies';
 
@@ -41,44 +44,78 @@ class HomeView extends React.Component {
 
     getCurrencyPairsLoadErrorView = () => {
         if (this.isCurrencyPairsFetchError()) {
-            return <div>(!) There might be a problem with your internet connection.</div>
+            return (
+                <Row center="xs">
+                    <div>(!) There might be a problem with your internet connection.</div>
+                </Row>
+            )
         }
     };
 
+    getCurrencyPairsLoadingSpinner = () => {
+        return <div>O</div>
+    };
+
+    getCurrencyPairsLoadingMessage = () => {
+        return <div>Loading currency pairs...</div>
+    };
+
+    getCurrencyPairsLoadingSpinnerAndMessage = () => {
+        return (
+            <div>
+                <Row center="xs">
+                    {this.getCurrencyPairsLoadingSpinner()}
+                </Row>
+                <Row center="xs">
+                    {this.getCurrencyPairsLoadingMessage()}
+                </Row>
+            </div>
+        )
+    };
+
     getCurrencyPairsLoadingView = () => {
-        if (!this.isCurrencyPairsFetched()) return <div>Loading currency pairs...</div>
-    };
-
-    getChartAdderView = () => {
-        return <ChartAdderView/>
-    };
-
-    getChartsContainerView = () => {
-        return <ChartsContainerView/>
+        if (!this.isCurrencyPairsFetched()) {
+            return (
+                <div>
+                    {this.getCurrencyPairsLoadingSpinnerAndMessage()}
+                    {this.getCurrencyPairsLoadErrorView()}
+                </div>
+            )
+        }
     };
 
     getChartAdderAndChartsContainerView = () => {
         if (this.isCurrencyPairsFetched()) {
             return (
                 <div>
-                    {this.getChartAdderView()}
+                    <Row center="xs">
+                        <ChartAdderView/>
+                    </Row>
                     <hr />
-                    {this.getChartsContainerView()}
+                    <Row>
+                        <ChartsContainerView/>
+                    </Row>
                 </div>
             )
         }
     };
 
+    getHomeGridView = () => {
+        return (
+            <div>
+                <Grid fluid>
+                    {this.getCurrencyPairsLoadingView()}
+                    {this.getChartAdderAndChartsContainerView()}
+                </Grid>
+            </div>
+        );
+    };
+
     render() {
         return (
-            <div className="container">
-                <div className="margin-top-medium text-center">
-                </div>
-                <div className="text-center">
-                    {this.getCurrencyPairsLoadingView()}
-                    {this.getCurrencyPairsLoadErrorView()}
-                    {this.getChartAdderAndChartsContainerView()}
-                </div>
+            <div>
+                {this.getHomeGridView()}
+                <GridTest/>
             </div>
         );
     }

@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Row, Col } from 'react-flexbox-grid';
+
 import Chart from '../Chart';
 
 import * as chartActions from '../../actions/charts';
@@ -19,12 +21,16 @@ class ChartsContainerView extends React.Component {
     };
 
     getChartView = (chart) => {
-        return <Chart chart={chart} key={chart.id}/>
+        return (
+            <Col key={chart.id} xs={12} sm={6} lg={4}>
+                <Chart chart={chart}/>
+            </Col>
+        )
     };
 
     render() {
         return (
-            <div className="container">
+            <div>
                 {this.getChartsView()}
             </div>
         );

@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Row, Col } from 'react-flexbox-grid';
+
 import PricePlot from '../../components/PricePlot'
 
 import {
@@ -109,7 +111,11 @@ class ChartView extends React.Component {
 
     getCurrentPriceView = () => {
         if (this.isDataAvailable()) {
-            return <div>{this.getCurrentPrice()}</div>
+            return (
+                <Col>
+                    <div>{this.getCurrentPrice()}</div>
+                </Col>
+            )
         }
     };
 
@@ -120,11 +126,21 @@ class ChartView extends React.Component {
     };
 
     getCloseButtonView = () => {
-        return <button onClick={this.onCloseButtonClick}>close</button>
+        return (
+            <Col>
+                <div>
+                    <button onClick={this.onCloseButtonClick}>X</button>
+                </div>
+            </Col>
+        )
     };
 
     getCurrencyNameView = () => {
-        return <div>{this.getCurrencyName()}</div>
+        return (
+            <Col>
+                <div>{this.getCurrencyName()}</div>
+            </Col>
+        )
     };
 
     getPollingIntervalOptions = () => {
@@ -138,49 +154,106 @@ class ChartView extends React.Component {
 
     getPollingIntervalDropdownView = () => {
         return (
-            <select defaultValue={DEFAULT_POLLING_INTERVAL} onChange={this.onPollingIntervalDropdownChange}>
-                {this.getPollingIntervalDropdownOptionViews()}
-            </select>
+            <Col>
+                <div>
+                    <select defaultValue={DEFAULT_POLLING_INTERVAL} onChange={this.onPollingIntervalDropdownChange}>
+                        {this.getPollingIntervalDropdownOptionViews()}
+                    </select>
+                </div>
+            </Col>
         )
     };
 
-    getChartLoadingView = () => {
-        if (this.isChartLoading()) return <div>loading</div>
+
+    getChartLoadingSpinnerView = () => {
+        if (this.isChartLoading()) {
+            return (
+                <Row center="xs">
+                    <div>loading...</div>
+                </Row>
+            )
+        }
     };
 
     getChartLoadErrorView = () => {
         if (this.isChartLoadFailed() && !this.isDataAvailable()) {
-            return <div>load: {this.getChart().loadFailedErrorMessage}</div>
+            return (
+                <Row center="xs">
+                    <div>load: {this.getChart().loadFailedErrorMessage}</div>
+                </Row>
+            )
         }
     };
 
-    getChartRefreshingView = () => {
-        if (this.isChartRefreshing()) return <div>refreshing</div>
+    getChartRefreshingOrRefreshErrorView = () => {
+        let message = '_';
+        if (this.isChartRefreshFailed()) message = '!';
+        else if (this.isChartRefreshing()) message = 'O';
+        return (
+            <Col>
+                <div>{message}</div>
+            </Col>
+        )
     };
 
-    getChartRefreshErrorView = () => {
-        if (this.isChartRefreshFailed()) return <div>refresh: {this.getChart().refreshFailedErrorMessage}</div>
+    getChartLoadingView = () => {
+        if (!this.isDataAvailable()) {
+            return (
+                <div>
+                    {this.getChartLoadingSpinnerView()}
+                    {this.getChartLoadErrorView()}
+                </div>
+            )
+        }
+    };
+
+    getChartHeaderView = () => {
+        return (
+            <div>
+                <Row between="xs">
+                    {this.getCurrencyNameView()}
+                    {this.getCurrentPriceView()}
+                    {this.getChartRefreshingOrRefreshErrorView()}
+                    {this.getPollingIntervalDropdownView()}
+                    {this.getCloseButtonView()}
+                </Row>
+            </div>
+        )
+    };
+
+    getChartBodyView = () => {
+        return (
+            <div>
+                <div>
+                    {this.getPriceDataPlotView()}
+                </div>
+            </div>
+        )
+    };
+
+    getChartLoadedView = () => {
+        if (this.isDataAvailable()) {
+            return (
+                <div>
+                    {this.getChartHeaderView()}
+                    {this.getChartBodyView()}
+                </div>
+            )
+        }
     };
 
     getChartView = () => {
         return (
-            <div style={{padding: '10px', margin: '10px'}}>
-                {this.getCurrencyNameView()}
-                {this.getCurrentPriceView()}
+            <div>
                 {this.getChartLoadingView()}
-                {this.getChartLoadErrorView()}
-                {this.getChartRefreshingView()}
-                {this.getChartRefreshErrorView()}
-                {this.getPollingIntervalDropdownView()}
-                {this.getPriceDataPlotView()}
-                {this.getCloseButtonView()}
+                {this.getChartLoadedView()}
             </div>
         )
     };
 
     render() {
         return (
-            <div className="container">
+            <div style={{margin: '10px'}}>
                 {this.getChartView()}
             </div>
         );

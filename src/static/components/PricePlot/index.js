@@ -56,7 +56,8 @@ export default class PricePlotView extends React.Component {
 
     getChartjsChart = () => {
         return (
-            <Line data={this.getChartjsData()} options={this.getChartjsOptions()} />
+            <Line data={this.getChartjsData()}
+                  options={this.getChartjsOptions()}/>
         )
     };
 
@@ -70,7 +71,7 @@ export default class PricePlotView extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div>
                 {this.getPlotView()}
             </div>
         );

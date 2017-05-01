@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Grid, Row, Col } from 'react-flexbox-grid';
+
 import * as chartActions from '../../actions/charts';
 
 
@@ -38,25 +40,34 @@ class ChartAdderView extends React.Component {
 
     getDropdownView = () => {
         return (
-            <select defaultValue={'EUR-TRY'} onChange={this.onDropdownChange}>
-                {this.getDropdownOptionViews()}
-            </select>
+            <div style={{display: 'inline', marginRight: '5px'}}>
+                <select defaultValue={'EUR-TRY'} onChange={this.onDropdownChange}>
+                    {this.getDropdownOptionViews()}
+                </select>
+            </div>
         )
     };
 
     getAddChartButtonView = () => {
-        return <button onClick={this.onAddChartButtonClick}>Add Chart</button>
+        return (
+            <div style={{display: 'inline', marginLeft: '5px'}}>
+                <button onClick={this.onAddChartButtonClick}>Add Chart</button>
+            </div>
+        )
     };
 
     render() {
         return (
-            <div className="container">
-                {this.getDropdownView()}
-                {this.getAddChartButtonView()}
-            </div>
-        );
+            <Col xs={12}>
+                <div>
+                    {this.getDropdownView()}
+                    {this.getAddChartButtonView()}
+                </div>
+            </Col>
+        )
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
