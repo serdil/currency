@@ -136,7 +136,6 @@ function refreshChartRequest(state, action) {
         action.chartId,
         chart => Object.assign({}, chart, {
             isRefreshing: true,
-            isRefreshed: false,
             isRefreshFailed: false
         })
     );
@@ -165,7 +164,6 @@ function refreshChartFailure(state, action) {
         action.chartId,
         chart => Object.assign({}, chart, {
             isRefreshing: false,
-            isRefreshed: true,
             isRefreshFailed: true,
             refreshFailedErrorMessage: action.errorMessage
         })
