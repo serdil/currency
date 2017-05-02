@@ -20,6 +20,11 @@ services:
             - /django-entrypoint.sh
         expose:
             - 8000
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:3
 
     frontend:
         extends:

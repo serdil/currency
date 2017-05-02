@@ -7,15 +7,21 @@ import {
     REFRESH_CHART_RESPONSE,
     REFRESH_CHART_FAILURE,
     CLOSE_CHART,
-    SET_CHART_POLLING_INTERVAL
+    SET_CHART_POLLING_INTERVAL,
+
+    DEFAULT_POLLING_INTERVAL
 } from '../constants';
 
 import {getCurrencyDataFromApi} from '../utils/currencyApi'
+import {saveChartsNoPromise} from "../utils/chartConfig";
 
-export function addChart(currencyPair) {
+export function addChart(currencyPair, pollingInterval=DEFAULT_POLLING_INTERVAL, saveCharts=true) {
     return (dispatch, getState) => {
         dispatch(addChartAction(currencyPair));
+
         const chartId = getState().charts.chartIdCounter;
+        dispatch(setChartPollingInterval(chartId, pollingInterval));
+        if (saveCharts) saveChartsNoPromise(getState().charts.charts);
 
         dispatch(loadChartRequest(chartId));
         getCurrencyDataFromApi(currencyPair)
@@ -115,6 +121,13 @@ function refreshChartFailure(chartId, errorMessage) {
 }
 
 export function closeChart(chartId) {
+    return (dispatch, getState) => {
+        dispatch(closeChartAction(chartId));
+        saveChartsNoPromise(getState().charts.charts)
+    }
+}
+
+function closeChartAction(chartId) {
     return {
         type: CLOSE_CHART,
         chartId: chartId
@@ -122,6 +135,13 @@ export function closeChart(chartId) {
 }
 
 export function setChartPollingInterval(chartId, pollingInterval) {
+    return (dispatch, getState) => {
+        dispatch(setChartPollingIntervalAction(chartId, pollingInterval));
+        saveChartsNoPromise(getState().charts.charts)
+    }
+}
+
+function setChartPollingIntervalAction(chartId, pollingInterval) {
     return {
         type: SET_CHART_POLLING_INTERVAL,
         chartId: chartId,

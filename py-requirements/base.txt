@@ -12,3 +12,5 @@ python-dateutil==2.6.0
 
 # Logging
 git+https://github.com/Seedstars/django-rest-logger.git
+
+redis==2.10.5

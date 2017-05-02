@@ -9,16 +9,33 @@ import ChartAdderView from '../ChartAdder';
 import ChartsContainerView from '../ChartsContainer';
 
 import * as currenciesActions from '../../actions/currencies';
+import * as chartActions from '../../actions/charts'
+
+import { getInitialChartConfig } from '../../utils/chartConfig'
 
 class HomeView extends React.Component {
 
     static propTypes = {
-        currencies: PropTypes.object
+        currencies: PropTypes.object,
+        fetchCurrencyPairs: PropTypes.func,
+        addChart: PropTypes.func
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isChartConfigFetched: false,
+            isChartConfigFetchError: false
+        }
+    }
 
     componentWillMount() {
         if (!this.isCurrencyPairsFetched()) {
             this.startFetchingCurrencyPairs()
+        }
+        if (!this.isChartConfigFetched()) {
+            this.startFetchingChartConfig()
         }
     }
 
@@ -30,6 +47,14 @@ class HomeView extends React.Component {
         return this.props.currencies.isCurrencyPairsLoadError
     };
 
+    isChartConfigFetched = () => {
+        return this.state.isChartConfigFetched
+    };
+
+    isChartConfigFetchError = () => {
+        return this.state.isChartConfigFetchError
+    };
+
     startFetchingCurrencyPairs = () => {
         this.props.fetchCurrencyPairs((err) => {
             if (err !== undefined) {
@@ -38,8 +63,28 @@ class HomeView extends React.Component {
         })
     };
 
-    getCurrencyPairsLoadErrorView = () => {
-        if (this.isCurrencyPairsFetchError()) {
+    startFetchingChartConfig = () => {
+        getInitialChartConfig()
+            .then((chartConfig) => {
+                this.addCharts(chartConfig);
+                this.setState({isChartConfigFetched: true, isChartConfigFetchError: false})
+            })
+            .catch((err) => {
+                console.error(err);
+                this.setState({isChartConfigFetchError: true});
+                setTimeout(this.startFetchingCurrencyPairs, 1000)
+            })
+    };
+
+    addCharts = (chartConfig) => {
+        for (const config of chartConfig) {
+            console.log(config);
+            this.props.addChart(config.currencyPair, config.pollingInterval, false);
+        }
+    };
+
+    getCurrencyPairsChartsLoadErrorView = () => {
+        if (this.isCurrencyPairsFetchError() || this.isChartConfigFetchError()) {
             return (
                 <Row center="xs">
                     <div>(!) There might be a problem with your internet connection.</div>
@@ -48,40 +93,40 @@ class HomeView extends React.Component {
         }
     };
 
-    getCurrencyPairsLoadingSpinner = () => {
+    getCurrencyPairsChartsLoadingSpinner = () => {
         return <div>O</div>
     };
 
-    getCurrencyPairsLoadingMessage = () => {
-        return <div>Loading currency pairs...</div>
+    getCurrencyPairsChartsLoadingMessage = () => {
+        return <div>Loading currency pairs and charts...</div>
     };
 
     getCurrencyPairsLoadingSpinnerAndMessage = () => {
         return (
             <div>
                 <Row center="xs">
-                    {this.getCurrencyPairsLoadingSpinner()}
+                    {this.getCurrencyPairsChartsLoadingSpinner()}
                 </Row>
                 <Row center="xs">
-                    {this.getCurrencyPairsLoadingMessage()}
+                    {this.getCurrencyPairsChartsLoadingMessage()}
                 </Row>
             </div>
         )
     };
 
     getCurrencyPairsLoadingView = () => {
-        if (!this.isCurrencyPairsFetched()) {
+        if (!this.isCurrencyPairsFetched() || !this.isChartConfigFetched()) {
             return (
                 <div>
                     {this.getCurrencyPairsLoadingSpinnerAndMessage()}
-                    {this.getCurrencyPairsLoadErrorView()}
+                    {this.getCurrencyPairsChartsLoadErrorView()}
                 </div>
             )
         }
     };
 
     getChartAdderAndChartsContainerView = () => {
-        if (this.isCurrencyPairsFetched()) {
+        if (this.isCurrencyPairsFetched() && this.isChartConfigFetched()) {
             return (
                 <div>
                     <Row center="xs">
@@ -123,7 +168,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(currenciesActions, dispatch);
+    return bindActionCreators({...currenciesActions, ...chartActions}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView);

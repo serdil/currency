@@ -8,8 +8,7 @@ import { Row, Col } from 'react-flexbox-grid';
 import PricePlot from '../../components/PricePlot'
 
 import {
-    POLLING_INTERVALS,
-    DEFAULT_POLLING_INTERVAL
+    POLLING_INTERVALS
 } from '../../constants';
 
 import * as chartActions from '../../actions/charts';
@@ -54,6 +53,10 @@ class ChartView extends React.Component {
 
     getChart = () => {
         return this.props.chart
+    };
+
+    getPollingInterval = () => {
+        return this.getChart().pollingInterval
     };
 
     isChartRefreshing = () => {
@@ -156,7 +159,7 @@ class ChartView extends React.Component {
         return (
             <Col>
                 <div>
-                    <select defaultValue={DEFAULT_POLLING_INTERVAL} onChange={this.onPollingIntervalDropdownChange}>
+                    <select value={this.getPollingInterval()} onChange={this.onPollingIntervalDropdownChange}>
                         {this.getPollingIntervalDropdownOptionViews()}
                     </select>
                 </div>

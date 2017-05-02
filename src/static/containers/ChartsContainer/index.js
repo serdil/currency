@@ -23,7 +23,7 @@ class ChartsContainerView extends React.Component {
     getChartView = (chart) => {
         return (
             <Col key={chart.id} xs={12} sm={6} lg={4}>
-                <Chart chart={chart}/>
+                <Chart chart={chart} />
             </Col>
         )
     };
