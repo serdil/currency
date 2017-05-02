@@ -8,11 +8,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import ChartAdderView from '../ChartAdder';
 import ChartsContainerView from '../ChartsContainer';
 
-import GridTest from '../../components/GridTest'
-
 import * as currenciesActions from '../../actions/currencies';
-
-import './style.scss';
 
 class HomeView extends React.Component {
 
@@ -115,7 +111,6 @@ class HomeView extends React.Component {
         return (
             <div>
                 {this.getHomeGridView()}
-                <GridTest/>
             </div>
         );
     }
