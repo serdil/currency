@@ -3,6 +3,7 @@ import {
     FETCH_CURRENCY_PAIRS_RESPONSE
 } from '../constants';
 
+import {getCurrencyPairsFromApi} from '../utils/currencyApi'
 
 export function fetchCurrencyPairs(callback) {
     return (dispatch) => {
@@ -16,20 +17,6 @@ export function fetchCurrencyPairs(callback) {
                 callback(true)
             });
     }
-}
-
-function getCurrencyPairsFromApi() { // TODO implement
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const rand = Math.random();
-            if (rand < 0.10) {
-                reject(null);
-            }
-            else {
-                resolve(['EUR-TRY', 'USD-TRY', 'CAD-TRY', 'NZD-TRY']);
-            }
-        }, 500)
-    })
 }
 
 function fetchCurrencyPairsResponse(response) {

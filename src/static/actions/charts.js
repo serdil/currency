@@ -10,6 +10,7 @@ import {
     SET_CHART_POLLING_INTERVAL
 } from '../constants';
 
+import {getCurrencyDataFromApi} from '../utils/currencyApi'
 
 export function addChart(currencyPair) {
     return (dispatch, getState) => {
@@ -38,23 +39,6 @@ function addChartAction(currencyPair) {
         type: ADD_CHART,
         currencyPair: currencyPair
     }
-}
-
-function getCurrencyDataFromApi(currencyPair) { // TODO implement
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const rand = Math.random();
-            if (rand < 0.05) {
-                reject({response: {status: 500}});
-            }
-            else if (rand < 0.10) {
-                reject(null);
-            }
-            else {
-                resolve(Array.from({length: 50}, () => Math.random() * 10));
-            }
-        }, 500)
-    })
 }
 
 function loadChartRequest(chartId) {
