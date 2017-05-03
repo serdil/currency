@@ -64,7 +64,7 @@ class ChartAdderView extends React.Component {
 
     getLabelView = () => {
         return (
-            <div style={{display: 'inline'}}>
+            <div style={{display: 'inline', margin: '5px'}}>
                 Add a new Chart:
             </div>
         )
@@ -72,19 +72,17 @@ class ChartAdderView extends React.Component {
 
     render() {
         return (
-            <Col xs={12}>
-                <Row middle="xs" center="xs">
-                    <Col>
-                        {this.getLabelView()}
-                    </Col>
-                    <Col>
-                        {this.getDropdownView()}
-                    </Col>
-                    <Col>
-                        {this.getAddChartButtonView()}
-                    </Col>
-                </Row>
-            </Col>
+            <Row middle="xs" center="xs">
+                <Col>
+                    {this.getLabelView()}
+                </Col>
+                <Col>
+                    {this.getDropdownView()}
+                </Col>
+                <Col>
+                    {this.getAddChartButtonView()}
+                </Col>
+            </Row>
         )
     }
 }

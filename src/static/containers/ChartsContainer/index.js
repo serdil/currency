@@ -30,9 +30,9 @@ class ChartsContainerView extends React.Component {
 
     render() {
         return (
-            <div>
+            <Row>
                 {this.getChartsView()}
-            </div>
+            </Row>
         );
     }
 }

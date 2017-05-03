@@ -25,9 +25,7 @@ class ChartView extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-            timeElapsedSinceLastRefresh: 0
-        };
+        this.timeElapsedSinceLastRefresh = 0;
 
         this.scheduleRefreshes();
     }
@@ -41,14 +39,12 @@ class ChartView extends React.Component {
     };
 
     incrementTimeAndRefreshIfNecessary = () => {
-        this.setState((state) => {
-            if (state.timeElapsedSinceLastRefresh >= this.getChart().pollingInterval) {
-                this.refreshChart();
-                return {timeElapsedSinceLastRefresh: 0}
-            } else {
-                return {timeElapsedSinceLastRefresh: state.timeElapsedSinceLastRefresh+1}
-            }
-        })
+        if (this.timeElapsedSinceLastRefresh >= this.getChart().pollingInterval) {
+            this.refreshChart();
+            this.timeElapsedSinceLastRefresh = 0
+        } else {
+            this.timeElapsedSinceLastRefresh += 1
+        }
     };
 
     getChart = () => {
@@ -115,9 +111,7 @@ class ChartView extends React.Component {
     getCurrentPriceView = () => {
         if (this.isDataAvailable()) {
             return (
-                <Col>
-                    <div>{this.getCurrentPrice()}</div>
-                </Col>
+                <div>{this.getCurrentPrice()}</div>
             )
         }
     };
@@ -130,19 +124,15 @@ class ChartView extends React.Component {
 
     getCloseButtonView = () => {
         return (
-            <Col>
-                <div>
-                    <button onClick={this.onCloseButtonClick}>X</button>
-                </div>
-            </Col>
+            <div>
+                <button onClick={this.onCloseButtonClick}>X</button>
+            </div>
         )
     };
 
     getCurrencyNameView = () => {
         return (
-            <Col>
-                <div>{this.getCurrencyName()}</div>
-            </Col>
+            <div>{this.getCurrencyName()}</div>
         )
     };
 
@@ -157,13 +147,11 @@ class ChartView extends React.Component {
 
     getPollingIntervalDropdownView = () => {
         return (
-            <Col>
-                <div>
-                    <select value={this.getPollingInterval()} onChange={this.onPollingIntervalDropdownChange}>
-                        {this.getPollingIntervalDropdownOptionViews()}
-                    </select>
-                </div>
-            </Col>
+            <div>
+                <select value={this.getPollingInterval()} onChange={this.onPollingIntervalDropdownChange}>
+                    {this.getPollingIntervalDropdownOptionViews()}
+                </select>
+            </div>
         )
     };
 
@@ -189,13 +177,11 @@ class ChartView extends React.Component {
     };
 
     getChartRefreshingOrRefreshErrorView = () => {
-        let message = '_';
+        let message = ' ';
         if (this.isChartRefreshFailed()) message = '!';
         else if (this.isChartRefreshing()) message = 'O';
         return (
-            <Col>
-                <div>{message}</div>
-            </Col>
+            <div>{message}</div>
         )
     };
 
@@ -214,11 +200,21 @@ class ChartView extends React.Component {
         return (
             <div>
                 <Row between="xs">
-                    {this.getCurrencyNameView()}
-                    {this.getCurrentPriceView()}
-                    {this.getChartRefreshingOrRefreshErrorView()}
-                    {this.getPollingIntervalDropdownView()}
-                    {this.getCloseButtonView()}
+                    <Col>
+                        {this.getCurrencyNameView()}
+                    </Col>
+                    <Col>
+                        {this.getCurrentPriceView()}
+                    </Col>
+                    <Col xs={1}>
+                        {this.getChartRefreshingOrRefreshErrorView()}
+                    </Col>
+                    <Col>
+                        {this.getPollingIntervalDropdownView()}
+                    </Col>
+                    <Col>
+                        {this.getCloseButtonView()}
+                    </Col>
                 </Row>
             </div>
         )
@@ -227,9 +223,7 @@ class ChartView extends React.Component {
     getChartBodyView = () => {
         return (
             <div>
-                <div>
-                    {this.getPriceDataPlotView()}
-                </div>
+                {this.getPriceDataPlotView()}
             </div>
         )
     };
@@ -247,16 +241,20 @@ class ChartView extends React.Component {
 
     getChartView = () => {
         return (
-            <div>
+            <div style={{margin: '10px'}}>
                 {this.getChartLoadingView()}
                 {this.getChartLoadedView()}
             </div>
         )
     };
 
+    abc = () => {
+        return <div>abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc </div>
+    };
+
     render() {
         return (
-            <div style={{margin: '10px'}}>
+            <div>
                 {this.getChartView()}
             </div>
         );

@@ -129,13 +129,9 @@ class HomeView extends React.Component {
         if (this.isCurrencyPairsFetched() && this.isChartConfigFetched()) {
             return (
                 <div>
-                    <Row center="xs">
-                        <ChartAdderView/>
-                    </Row>
+                    <ChartAdderView/>
                     <hr />
-                    <Row>
-                        <ChartsContainerView/>
-                    </Row>
+                    <ChartsContainerView/>
                 </div>
             )
         }
